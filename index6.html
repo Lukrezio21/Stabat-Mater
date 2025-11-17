@@ -22,6 +22,19 @@
             margin-right: 10px;
             transition: background-color 0.2s;
         }
+        /* * NUEVOS ESTILOS PARA EL SELECTOR DE PISTAS 
+         * Igualamos el padding y la fuente para que el tamaño coincida
+         */
+        #track-selector {
+        padding: 10px 15px; /* Ligeramente menos padding que el botón para compensar el desplegable */
+        font-size: 18px;
+        border-radius: 5px;
+        border: 1px solid #ccc; /* Añadimos un borde discreto */
+        background-color: white;
+        cursor: pointer;
+        /* Esto es clave para alinear la altura con los botones */
+        height: 44px; 
+        }
         #iniciar-musica {
             background-color: #4CAF50; /* Verde */
             color: white;
@@ -67,7 +80,11 @@
     <a href=index.html>Inicio</a>
     <center>
         <h1>Stabat Mater (A. Dvorak)</h1>
-        <h2>VI. Quartett und Chor. Fac me vere tecum flere</h2>
+        <h2>
+            <a href=index5.html>Anterior</a>
+            VI. Quartett und Chor. Fac me vere tecum flere
+            <a href=index7.html>Siguiente</a>
+        </h2>
     </center>
     <hr>
     <h2>Selección de Voces</h2>
@@ -79,7 +96,7 @@
 
     <hr>
 
-    <audio id="audio1" loop>
+    <audio id="audio1">
         </audio>
     
     <audio id="audio2">
@@ -288,7 +305,26 @@
             timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
         }
     });
+       // --- NUEVO LISTENER: REHABILITAR AL TERMINAR ---
+    audio1.addEventListener('ended', function() {
+        // 1. Rebobinar ambas pistas al inicio (0 segundos)
+        audio1.currentTime = 0;
+        audio2.currentTime = 0;
+        
+        // 2. Desactivar la barra de progreso (visual)
+        progressBar.style.width = '0%';
+        
+        // 3. Rehabilitar el botón de Inicio y deshabilitar el de Stop
+        const botonInicio = document.getElementById('iniciar-musica');
+        const botonParar = document.getElementById('parar-musica');
+        
+        botonInicio.disabled = false;
+        botonParar.disabled = true;
 
+        // Opcional: Volver a mostrar el tiempo inicial
+        const duration = formatTime(audio1.duration);
+        timeDisplay.textContent = `0:00 / ${duration}`;
+    });
     // 6. Lógica de Salto Deshabilitada (sin cambios)
     
     // --- PUNTO DE ENTRADA PRINCIPAL ---
